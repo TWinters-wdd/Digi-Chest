@@ -15,6 +15,8 @@ Digi-Chest is currently a blank Expo and React Native starter project. The appli
 - TypeScript
 - React Native Web
 - VS Code
+- NodeJS
+- Firebase (PostgreSQL)
 
 ## VSCode Extentions Used
 - Expo Tools (expo.vscode-expo-tools
