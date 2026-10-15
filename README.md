@@ -1,12 +1,10 @@
 # Digi-Chest
-(README created with assistance from OpenAI's Codex)
 
-## Digi-Chest Description
-The Digi-Chest application will turn ordinary walks and exercise into a game. Similar to geocaching, Digi-Chest provides users hints to "buried treasure". The user will need to walk to a certain area on the map to play a mini game to retrieve the buried treasure.
+Digi-Chest is an Expo and React Native game that turns walks into treasure hunts. Players follow clues, travel to locations, complete mini-games, and collect digital treasure.
 
-## Project Status
+## Current status
 
-Digi-Chest is currently a blank Expo and React Native starter project. The application is being built from scratch.
+The Expo app is connected to Firebase Data Connect. `App.tsx` loads the public item list when it opens and creates a demo item only when the add button is pressed.
 
 ## Technology
 
@@ -15,60 +13,18 @@ Digi-Chest is currently a blank Expo and React Native starter project. The appli
 - Expo Router (navigation)
 - TypeScript
 - React Native Web
-- VS Code
+- Firebase Data Connect
 
-## VSCode Extentions Used
-- Expo Tools (expo.vscode-expo-tools
-)
-- ES7+ React/Redux/React-Native snippets (dsznajder.es7-react-js-snippets
-)
-- ESLint (dbaeumer.vscode-eslint)
-- Prettier - Code Formatter (esbenp.prettier-vscode)
-- Error Lens (usernamehw.errorlens)
-
-## Getting Started
-
-### Prerequisites
-
-Install:
-
-- Node.js
-- npm
-- Expo Go, an Android emulator, or an iOS simulator
-
-### Installation
-
-Clone the repository, enter the project folder, and install dependencies:
+## Install and run
 
 ```bash
 npm install
-```
-
-### Running the Application
-
-Start the Expo development server:
-
-```bash
 npm start
 ```
 
-Additional commands:
+Use `npm run android`, `npm run ios`, or `npm run web` for a specific target. Run `npm run typecheck` to check the TypeScript code.
 
-```bash
-npm run android
-npm run ios
-npm run web
-```
-
-## Type Checking
-
-Check the TypeScript code without starting the application:
-
-```bash
-npm run typecheck
-```
-
-## Project Structure
+## Project structure
 
 ```text
 Digi-Chest/
@@ -82,30 +38,45 @@ Digi-Chest/
 │       └── settings.tsx      # Settings page
 ├── components/      # Reusable UI components
 ├── constants/       # Shared values such as colors
+├── src/firebase.ts   # Firebase and Data Connect initialization
+├── dataconnect/      # Data Connect schema and operations
 ├── app.json         # Expo application configuration
 ├── package.json     # Dependencies and scripts
 ├── tsconfig.json    # TypeScript configuration
 └── README.md        # Project documentation
 ```
 
-## Planned Features
+The schema, connector, operations, and seed data are kept separate because Firebase Data Connect treats them as different inputs. The operations can remain together in `queries.gql`; split them into more files only when the file becomes difficult to navigate.
 
-- Interactive map
-- Location-based treasure hunts
-- Clues and hints
-- Mini-games
-- Player profiles
-- Rewards and collectibles
-- Leaderboards
-- Shop and customization options
+## Firebase Data Connect workflow
 
-## Development Guidelines
+The generated SDK is derived from `dataconnect/schema` and `dataconnect/example`. Regenerate it after changing either the schema or operations:
 
-- Use TypeScript for application code.
-- Keep components small and reusable.
-- Run `npm run typecheck` before committing changes.
-- Keep documentation updated as features are added.
+```bash
+npx firebase-tools@latest dataconnect:sdk:generate
+```
 
-## License
+To run the local emulator or load the optional demo data:
 
-Add the project's license information here.
+```bash
+npx firebase-tools@latest emulators:start --only dataconnect
+npx firebase-tools@latest dataconnect:execute dataconnect/seed_data.gql
+```
+
+Deploy the Data Connect service with:
+
+```bash
+npx firebase-tools@latest deploy --only dataconnect
+```
+
+The command updates `src/dataconnect-generated/` and the local package reference in `package.json`. The Firebase CLI owns that output; application code should import it, not edit it.
+
+## Generated and local-only files
+
+The following are disposable and intentionally ignored by Git:
+
+- `.firebase/` — Firebase editor metadata
+- `dataconnect/.dataconnect/` — local Data Connect emulator database state
+- `*.log` — Firebase and emulator logs
+
+Deleting those files resets only local tooling state; Firebase can recreate them.
