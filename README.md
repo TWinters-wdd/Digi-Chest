@@ -111,3 +111,6 @@ Digi-Chest/
 ## License
 
 Add the project's license information here.
+
+## Map Tab Information
+- Run npx expo install expo-maps (expo-maps)
