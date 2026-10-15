@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-import { colors } from '../constants/colors';
+import { useTheme } from '../constants/theme';
 
 type Props = {
   title: string;
@@ -9,6 +9,9 @@ type Props = {
 
 // Temporary content for pages that haven't been built yet.
 export default function ScreenPlaceholder({ title, description }: Props) {
+  const { colors } = useTheme();
+  const styles = createStyles(colors);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
@@ -17,7 +20,8 @@ export default function ScreenPlaceholder({ title, description }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
+function createStyles(colors: ReturnType<typeof useTheme>['colors']) {
+  return StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
@@ -36,4 +40,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: colors.textMuted,
   },
-});
+  });
+}

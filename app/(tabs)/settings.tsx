@@ -1,11 +1,11 @@
 import { Ionicons } from '@expo/vector-icons';
-import { useState } from 'react';
+import { useState, type ComponentProps } from 'react';
 import { Pressable, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
 
-import { colors } from '../../constants/colors';
+import { useTheme } from '../../constants/theme';
 
 type SettingRowProps = {
-  icon: React.ComponentProps<typeof Ionicons>['name'];
+  icon: ComponentProps<typeof Ionicons>['name'];
   label: string;
   description: string;
   value: boolean;
@@ -13,6 +13,9 @@ type SettingRowProps = {
 };
 
 function SettingRow({ icon, label, description, value, onValueChange }: SettingRowProps) {
+  const { colors } = useTheme();
+  const styles = createStyles(colors);
+
   return (
     <View style={styles.settingRow}>
       <View style={styles.settingIcon}>
@@ -33,7 +36,8 @@ function SettingRow({ icon, label, description, value, onValueChange }: SettingR
 }
 
 export default function SettingsScreen() {
-  const [darkMode, setDarkMode] = useState(true);
+  const { colors, isDark, setIsDark } = useTheme();
+  const styles = createStyles(colors);
   const [notifications, setNotifications] = useState(true);
   const [locationServices, setLocationServices] = useState(true);
   const [soundEffects, setSoundEffects] = useState(true);
@@ -56,8 +60,8 @@ export default function SettingsScreen() {
           icon="moon"
           label="Dark mode"
           description="Use a darker appearance throughout the app."
-          value={darkMode}
-          onValueChange={setDarkMode}
+          value={isDark}
+          onValueChange={setIsDark}
         />
         <SettingRow
           icon="notifications"
@@ -105,7 +109,8 @@ export default function SettingsScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+function createStyles(colors: ReturnType<typeof useTheme>['colors']) {
+  return StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: colors.background,
@@ -222,4 +227,5 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: colors.textMuted,
   },
-});
+  });
+}
