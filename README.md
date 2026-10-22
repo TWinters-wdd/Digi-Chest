@@ -4,7 +4,12 @@ Digi-Chest is an Expo and React Native game that turns walks into treasure hunts
 
 ## Current status
 
-The Expo app is connected to Firebase Data Connect. `App.tsx` loads the public item list when it opens and creates a demo item only when the add button is pressed.
+The Expo app is connected to Firebase Data Connect. `App.tsx` loads the public item list when it opens and creates a demo item only when the add button is pressed. We're each working on separate pages of the app
+
+Talmage - Map
+Silas - Leaderboard & Firebase
+Thomas - Marketplace
+Jason - Settings & Authentication
 
 ## Technology
 
