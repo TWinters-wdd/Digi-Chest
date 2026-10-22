@@ -1,40 +1,64 @@
+import { useEffect, useRef } from 'react';
 import {
-  MapContainer,
-  Marker,
-  Popup,
-  TileLayer,
-} from 'react-leaflet';
-import { StyleSheet, View } from 'react-native';
+  Map as MapLibreMap,
+  NavigationControl,
+  setWorkerUrl,
+} from 'maplibre-gl';
+import 'maplibre-gl/dist/maplibre-gl.css';
 
-const mapCenter: [number, number] = [39.7392, -104.9903];
+setWorkerUrl('/maplibre-gl-worker.mjs');
 
-export default function MapView() {
-  return (
-    <View style={styles.container}>
-      <MapContainer
-        center={mapCenter}
-        zoom={13}
-        scrollWheelZoom={true}
-        style={styles.map}
-        >
-          <TileLayer
-            url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>' />
+const initialCenter: [number, number] = [-104.9903, 39.7392,];
 
-            <Marker position={mapCenter}>
-              <Popup>Demo treasure location</Popup>
-            </Marker>
-        </MapContainer>
-    </View>
-  );
+function hideLabelLayers(map: MapLibreMap) {
+  const layers = map.getStyle().layers ?? [];
+
+  for (const layer of layers) {
+    if (layer.type === 'symbol') {
+      map.setLayoutProperty(layer.id, 'visibility', 'none');
+    }
+  }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  map: {
-    width: '100%',
-    height: '100%',
-  },
-});
+export default function MapView() {
+  const mapContainerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const container = mapContainerRef.current;
+
+    if (!container) {
+      return;
+    }
+
+    const map = new MapLibreMap({
+      container,
+      style: 'https://tiles.openfreemap.org/styles/liberty',
+      center: initialCenter,
+      zoom: 14,
+      attributionControl: {
+        compact: true,
+      },
+    });
+
+    map.addControl(new NavigationControl(), 'top-right');
+
+    map.once('load', () => {
+      hideLabelLayers(map);
+    });
+
+    return () => {
+      map.remove();
+    };
+  }, []);
+
+  return (
+    <div
+      ref={mapContainerRef}
+      style={{
+        width: '100%',
+        height: '100%',
+        minHeight: 500,
+      }}
+    />
+  );
+}
