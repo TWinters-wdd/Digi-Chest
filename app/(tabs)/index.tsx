@@ -1,59 +1,14 @@
+
 import { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { listItems, type ListItemsData } from '@dataconnect/generated';
 
 import { colors } from '../../constants/colors';
 import { dataConnect } from '../../src/firebase';
-
-type Item = ListItemsData['items'][number];
-
+import MapView from '../../components/MapView';
+        
 export default function MapScreen() {
-  const [items, setItems] = useState<Item[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const loadItems = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const result = await listItems(dataConnect, { fetchPolicy: 'SERVER_ONLY' });
-      setItems(result.data.items);
-    } catch (requestError) {
-      setError(requestError instanceof Error ? requestError.message : 'Could not load treasure items.');
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    void loadItems();
-  }, [loadItems]);
-
-  return (
-    <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
-      <Text style={styles.eyebrow}>EXPLORE</Text>
-      <Text style={styles.title}>Interactive Map</Text>
-      <Text style={styles.description}>Find nearby treasure chests and follow the hints to dig them up.</Text>
-
-      <View style={styles.sectionHeader}>
-        <Text style={styles.sectionTitle}>Available treasure</Text>
-        <Pressable onPress={() => void loadItems()} disabled={loading}>
-          <Text style={styles.refresh}>{loading ? 'Loading…' : 'Refresh'}</Text>
-        </Pressable>
-      </View>
-
-      {loading ? <ActivityIndicator color={colors.accent} /> : null}
-      {error ? <Text style={styles.error}>{error}</Text> : null}
-      {!loading && !error && items.length === 0 ? <Text style={styles.empty}>No treasure items found yet.</Text> : null}
-      {items.map((item) => (
-        <View key={item.id} style={styles.itemCard}>
-          <Text style={styles.itemName}>{item.name}</Text>
-          <Text style={styles.itemId}>ID: {item.id}</Text>
-        </View>
-      ))}
-    </ScrollView>
-  );
+  return <MapView />;
 }
 
 const styles = StyleSheet.create({
