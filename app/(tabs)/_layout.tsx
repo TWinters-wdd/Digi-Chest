@@ -4,7 +4,7 @@ import type { ComponentProps } from 'react';
 import type { ColorValue } from 'react-native';
 import 'leaflet/dist/leaflet.css';
 
-import { colors } from '../../constants/colors';
+import { useTheme } from '../../constants/theme';
 
 type IconName = ComponentProps<typeof Ionicons>['name'];
 
@@ -16,6 +16,8 @@ function tabIcon(focusedIcon: IconName, unfocusedIcon: IconName) {
 }
 
 export default function TabLayout() {
+  const { colors } = useTheme();
+
   return (
     <Tabs
       screenOptions={{
