@@ -19,6 +19,24 @@ Jason - Settings & Authentication
 - TypeScript
 - React Native Web
 - Firebase Data Connect
+- VS Code
+- NodeJS
+- Firebase (PostgreSQL)
+
+## VSCode Extentions Used
+- Expo Tools (expo.vscode-expo-tools
+)
+- ES7+ React/Redux/React-Native snippets (dsznajder.es7-react-js-snippets
+)
+- ESLint (dbaeumer.vscode-eslint)
+- Prettier - Code Formatter (esbenp.prettier-vscode)
+- Error Lens (usernamehw.errorlens)
+
+## Getting Started
+
+### Prerequisites
+
+Install:
 
 ## Install and run
 
@@ -85,3 +103,7 @@ The following are disposable and intentionally ignored by Git:
 - `*.log` — Firebase and emulator logs
 
 Deleting those files resets only local tooling state; Firebase can recreate them.
+Add the project's license information here.
+
+## Map Tab Information
+- Run npx expo install expo-maps (expo-maps)
