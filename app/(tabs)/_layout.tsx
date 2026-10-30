@@ -46,10 +46,10 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="marketplace"
+        name="inventory"
         options={{
-          title: 'Marketplace',
-          tabBarIcon: tabIcon('storefront', 'storefront-outline'),
+          title: 'Inventory',
+          tabBarIcon: tabIcon('briefcase', 'briefcase-outline'),
         }}
       />
       <Tabs.Screen
